@@ -46,17 +46,17 @@ function checkCode(res) {
   if (res.status === -404) {
     alert(res.msg);
   }
-  if (res.data && !res.data.success) {
-    alert(res.data.error_msg);
-  }
+  // if (res.data && !res.data.success) {
+  //   alert(res.data.error_msg);
+  // }
   return res;
-}
+};
 
 export default {
   post(url, data) {
     return axios({
       method: "post",
-      baseURL: "https://cnodejs.org/api/v1",
+      baseURL: "http://39.99.196.152:3000/api",
       url,
       data: qs.stringify(data),
       timeout: 10000,
@@ -75,7 +75,7 @@ export default {
   get(url, params) {
     return axios({
       method: "get",
-      baseURL: "https://cnodejs.org/api/v1",
+      baseURL: "http://39.99.196.152:3000/api",
       url,
       params, // get 请求时带的参数
       timeout: 10000,
