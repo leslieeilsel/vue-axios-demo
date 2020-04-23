@@ -14,7 +14,6 @@
         </FormItem>
         <FormItem label="" prop="code" style="margin-bottom: 28px;" id="formBtn">
           <Input
-            clearable
             type="text"
             placeholder="请输入验证码"
             v-model="form.code"
@@ -27,7 +26,7 @@
             {{ count }} 秒后可重新发送
           </span>
         <FormItem style="text-align: center;" id="submitBtn">
-          <Button :disabled="loginBtn" @click="handleSubmit('form')" long >
+          <Button :disabled="loginBtn" @click="handleSubmit('form')" long :loading="btnLoading">
             点击领券
           </Button>
         </FormItem>
@@ -52,6 +51,7 @@ export default {
     };
     return {
       loginBtn: true,
+      btnLoading: false,
       show: false,
       count: "",
       timer: null,
@@ -104,14 +104,18 @@ export default {
     handleSubmit() {
       if (this.form.code && Number(this.form.code) === this.code) {
         let params = { phone_number: this.form.phone };
+        this.btnLoading = true;
         http.post(api.savePhone, params).then(res => {
           if (res.data.data.result) {
             this.$Message.success("验证通过");
+            this.btnLoading = false;
             this.form.phone = "";
             this.form.code = "";
             this.loginBtn = true;
             this.show = false;
             this.count = 0;
+            window.location.href =
+              "https://wallet.95516.com/s/wl/webV3/activity/yhtzB1/html/snsIndex.html?r=1e70dd2adb4e80a5a6199e0297ca6a05&code=yhtzc2c";
           }
         });
       } else {

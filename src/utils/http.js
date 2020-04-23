@@ -50,12 +50,13 @@ function checkCode(res) {
   //   alert(res.data.error_msg);
   // }
   return res;
-};
+}
 
 export default {
   post(url, data) {
     return axios({
       method: "post",
+      // baseURL: "http://localhost:8905/api",
       baseURL: "http://39.99.196.152:3000/api",
       url,
       data: qs.stringify(data),
@@ -75,6 +76,7 @@ export default {
   get(url, params) {
     return axios({
       method: "get",
+      // baseURL: "http://localhost:8905/api",
       baseURL: "http://39.99.196.152:3000/api",
       url,
       params, // get 请求时带的参数
