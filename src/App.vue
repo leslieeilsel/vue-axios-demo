@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     sendMessage() {
-      if (this.form.phone && this.sendStatus === "发送") {
+      if (this.form.phone !== "" && this.sendStatus === "发送") {
         let params = this.form;
         http.post(api.sendSms, params).then(res => {
           if (res.data.data.xml.returnstatus === "Success") {
@@ -81,7 +81,11 @@ export default {
           }
         });
       } else {
-        this.$Message.error("请倒计时结束之后重新发送");
+        if (this.form.phone !== "") {
+          this.$Message.error("手机号不能为空");
+        } else {
+          this.$Message.error("请倒计时结束之后重新发送");
+        }
       }
     },
     getCode() {
@@ -115,7 +119,7 @@ export default {
             this.show = false;
             this.count = 0;
             window.location.href =
-              "https://wallet.95516.com/s/wl/webV3/activity/yhtzB1/html/snsIndex.html?r=1e70dd2adb4e80a5a6199e0297ca6a05&code=yhtzc2c";
+              "https://youhui.95516.com/hybrid_v4/html/help/download.html?code=yhtzc2c";
           }
         });
       } else {
@@ -134,6 +138,12 @@ export default {
 </script>
 
 <style>
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   overflow: hidden;
 }
@@ -155,11 +165,11 @@ body {
 
 #form {
   margin: 0 auto;
-  /*max-width: 280px;*/
-  position: fixed;
+  position: absolute;
   bottom: 24%;
   right: 20%;
   left: 20%;
+  display: block;
 }
 
 #background1 .ivu-input {
