@@ -57,7 +57,7 @@ export default {
     return axios({
       method: "post",
       // baseURL: "http://localhost:8905/api",
-      baseURL: "http://39.99.196.152:3000/api",
+      baseURL: "http://hm.lugertech.com:3000/api",
       url,
       data: qs.stringify(data),
       timeout: 10000,
@@ -77,7 +77,7 @@ export default {
     return axios({
       method: "get",
       // baseURL: "http://localhost:8905/api",
-      baseURL: "http://39.99.196.152:3000/api",
+      baseURL: "http://hm.lugertech.com:3000/api",
       url,
       params, // get 请求时带的参数
       timeout: 10000,

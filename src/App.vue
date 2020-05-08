@@ -40,15 +40,6 @@ import api from "./utils/api";
 
 export default {
   data() {
-    const validatePhone = (rule, value, callback) => {
-      if (!value) {
-        this.$Message.error("手机号不能为空");
-      } else if (!/^1[34578]\d{9}$/.test(value)) {
-        this.$Message.error("手机号格式不正确");
-      } else {
-        callback();
-      }
-    };
     return {
       loginBtn: true,
       btnLoading: false,
@@ -62,13 +53,17 @@ export default {
       sendStatus: "发送",
       code: null,
       ruleCustom: {
-        phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
+        // phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
       }
     };
   },
   methods: {
     sendMessage() {
-      if (this.form.phone !== "" && this.sendStatus === "发送") {
+      if (!this.form.phone) {
+        this.$Message.error("手机号不能为空");
+      } else if (!/^1[3|4|5|6|7|8|9]\d{9}$/.test(this.form.phone)) {
+        this.$Message.error("手机号格式不正确");
+      } else if (this.form.phone !== "" && this.sendStatus === "发送") {
         let params = this.form;
         http.post(api.sendSms, params).then(res => {
           if (res.data.data.xml.returnstatus === "Success") {
@@ -110,16 +105,45 @@ export default {
         let params = { phone_number: this.form.phone };
         this.btnLoading = true;
         http.post(api.savePhone, params).then(res => {
-          if (res.data.data.result) {
-            this.$Message.success("验证通过");
+          // console.log(res);
+          if (res.data.data.result === true) {
+            this.$Message.success("领券成功，请前往 云闪付APP 查看");
             this.btnLoading = false;
             this.form.phone = "";
             this.form.code = "";
             this.loginBtn = true;
             this.show = false;
             this.count = 0;
-            window.location.href =
-              "https://youhui.95516.com/hybrid_v4/html/help/download.html?code=yhtzc2c";
+          } else if (res.data.data.result === "新用户") {
+            this.$Message.error("检测到您为新用户，请前往 云闪付APP 注册用户");
+            setTimeout(() => {
+              window.location.href =
+                "https://youhui.95516.com/hybrid_v4/html/help/download.html?code=yhtzc2c";
+            }, 2000);
+          } else if (res.data.data.result === "领券失败") {
+            this.$Message.error("领券失败");
+            this.btnLoading = false;
+            this.form.phone = "";
+            this.form.code = "";
+            this.loginBtn = true;
+            this.show = false;
+            this.count = 0;
+          } else if (res.data.data.result === "活动尚未开始") {
+            this.$Message.error("活动尚未开始");
+            this.btnLoading = false;
+            this.form.phone = "";
+            this.form.code = "";
+            this.loginBtn = true;
+            this.show = false;
+            this.count = 0;
+          } else {
+            this.$Message.error("领券失败");
+            this.btnLoading = false;
+            this.form.phone = "";
+            this.form.code = "";
+            this.loginBtn = true;
+            this.show = false;
+            this.count = 0;
           }
         });
       } else {
@@ -152,8 +176,8 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url("http://r.photo.store.qq.com/psc?/V12ol6gx2nrILn/jkqgNxaPJb7RsklupiKoXfameNUHU*MXNksUvcXiByyLzNEDigeJeftei3zdY3g0J9RJt0vKi7O03YQDObaHhwxSsRFxl9qs.WA0xVG18Pg!/r");
-  /* background-image: url('/images/background2.jpg'); */
+  /* background-image: url("http://r.photo.store.qq.com/psc?/V12ol6gx2nrILn/jkqgNxaPJb7RsklupiKoXcRzZr5z5LtAc3auefaHufGjrWZnmslLHQRs7tIifdNpAIlVcbMgz8ad0ndX1oPa3fUmNESEeJbu9GytdmegrPo!/r"); */
+  background-image: url("./assets/images/background.jpg");
   background-repeat: no-repeat repeat;
   background-size: 100% 100%;
   background-attachment: fixed;

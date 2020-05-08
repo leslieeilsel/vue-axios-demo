@@ -9,6 +9,11 @@ Vue.use(ViewUI);
 
 Vue.config.productionTip = false;
 
+Vue.prototype.$Message.config({
+  top: 150,
+  duration: 5
+});
+
 new Vue({
   router,
   store,
