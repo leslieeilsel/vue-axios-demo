@@ -71,6 +71,9 @@ export default {
             this.getCode();
             this.code = res.data.data.code;
             this.loginBtn = false;
+          } else if (res.data.data.result === "归属地异常") {
+            this.form.phone = "";
+            this.$Message.error("本活动仅限陕西地区手机用户参加！");
           } else {
             this.$Message.error(res.data.data.xml.message);
           }
@@ -190,7 +193,7 @@ body {
 #form {
   margin: 0 auto;
   position: absolute;
-  bottom: 24%;
+  bottom: 27%;
   right: 20%;
   left: 20%;
   display: block;
@@ -202,16 +205,16 @@ body {
   border-radius: 20px;
   font-size: 14px;
   padding: 4px 35px;
-  color: #e5e3e3;
+  color: #f7f7f7;
 }
 
 #submitBtn .ivu-btn {
-  background-color: #993831c7;
+  background-color: #e54b6c;
   border: none;
   border-radius: 20px;
   font-size: 14px;
   padding: 4px 35px;
-  color: #e5e3e3;
+  color: #f7f7f7;
 }
 
 #formBtn .ivu-btn {
@@ -222,7 +225,7 @@ body {
   position: absolute;
   right: 0;
   margin-top: 1px;
-  color: #993831c7;
+  color: #e54b6c;
 }
 
 #formBtn .ivu-btn-text:hover {
